@@ -1,0 +1,142 @@
+; パスモード
+path_mode = 0
+if path_mode = 1 {
+	dirP = "A:/Work/Software/Utility - Nube Tool Box/Source"
+	delete "hsptmp"
+	delete "obj"
+} else {
+	dirP = dir_exe
+}
+chdir dirP
+; データ
+title_name = "Nube Tool Box"
+version = "1.0.0"
+#packopt name "Nube Tool Box"
+#packopt icon "bin-Icon.ico"
+#pack "pgm-Main.hsp"
+#pack "doc-ColorList.txt"
+randomize
+winX = 320
+winY = 480
+posX = 12
+posY = 12
+screen 0 , winX,winY , 4 , posX,posY
+title "" + title_name + " " + version
+font "ＭＳ ゴシック" , 15
+*Reset
+setup = 1
+// #include "user32.as"
+#include "Mod/mod-waitFPS.hsp"
+#include "Mod/mod-ClipboardController.hsp"
+#include "Mod/mod-getCPU.hsp"
+#include "Mod/mod-getClock.hsp"
+#include "Mod/mod-KeyCodeList.hsp"
+#include "Mod/mod-playMP3.hsp"
+#include "Mod/mod-ColorPallet.hsp"
+#include "Mod/mod-Counter.hsp"
+#include "Mod/mod-generateRandomString.hsp"
+#include "Mod/mod-AsciiCodeList.hsp"
+#include "Mod/mod-convertString.hsp"
+; 初期変数
+window_active = 0
+page = 1
+flag_key_code_list   = 0
+flag_color_list      = 0
+flag_ascii_code_list = 0
+get_click = -1
+get_enter = -1
+reload = 1
+; コンフィグ
+#include "pgm-Config.hsp"
+gosub *checkConfig
+gosub *loadConfig
+#include "pgm-App.hsp"
+gosub *checkAppList
+gosub *loadAppList
+fps_config fps
+; 設定
+#include "pgm-Graphic.hsp"
+#include "pgm-System.hsp"
+gosub *addMusicFile
+; ルート
+setup = 0
+*MainA
+	redraw 0
+	color 239,239,239 : boxf
+	gosub *calcTime
+	gosub *getSystemInfo
+	gosub *getMusicPlayTime
+	gosub *getMusicLengthTime
+	onkey gosub *getKeyCode
+	if reload = 1 : gosub *drawObjectA
+	gosub *drawTextBackA
+	gosub *drawTextA
+	fps_wait
+	onexit  gosub *exitB
+	onerror       *exitError
+	redraw 1
+goto *MainA
+*goMainA
+	page = 1
+	move_page = 0
+	reload = 1
+goto *MainA
+*MainB
+	redraw 0
+	color 239,239,239 : boxf
+	gosub *calcTime
+	gosub *getColorPallet
+	if reload = 1 : gosub *drawObjectB
+	gosub *drawTextBackB
+	gosub *drawTextB
+	fps_wait
+	onexit  gosub *exitB
+	onerror       *exitError
+	redraw 1
+goto *MainB
+*goMainB
+	page = 2
+	move_page = 0
+	reload = 1
+goto *MainB
+*MainC
+	redraw 0
+	color 239,239,239 : boxf
+	gosub *calcTime
+	if reload = 1 : gosub *drawObjectC
+	gosub *drawTextBackC
+	gosub *drawTextC
+	fps_wait
+	onexit  gosub *exitB
+	onerror       *exitError
+	redraw 1
+goto *MainC
+*goMainC
+	page = 3
+	move_page = 0
+	reload = 1
+goto *MainC
+*MainD
+	redraw 0
+	color 239,239,239 : boxf
+	gosub *calcTime
+	if reload = 1 : gosub *drawObjectD
+	gosub *drawTextBackD
+	gosub *drawTextD
+	onkey gosub *checkKey
+	fps_wait
+	onexit  gosub *exitB
+	onerror       *exitError
+	redraw 1
+goto *MainD
+*goMainD
+	page = 4
+	move_page = 0
+	reload = 1
+goto *MainD
+*Redirect
+	if page = 1 : goto *goMainA
+	if page = 2 : goto *goMainB
+	if page = 3 : goto *goMainC
+	if page = 4 : goto *goMainD
+goto *Reset

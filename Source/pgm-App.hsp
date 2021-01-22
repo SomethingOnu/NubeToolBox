@@ -1,0 +1,131 @@
+; 初期変数
+set_app_1 = ""
+set_app_2 = ""
+set_app_3 = ""
+sdim app      ,  128 , 10000
+sdim app_name ,  128
+sdim app_path ,  128
+sdim app_mes  ,   64 , 4
+sdim app_list , 1024
+appP = dirP+"\\App.ini"
+
+goto *EoF_App
+
+; アプリケーションファイルを確認する
+*checkAppList
+	notesel cacheB
+	exist appP
+	if strsize = -1 {
+		noteadd "[0000] name = "
+		noteadd "       path = "
+		notesave appP
+	}
+return
+; アプリケーションを読み込む
+*loadAppList
+	n  = 0
+	nl = 0
+	nx = 0
+	ne = ""
+	noteload appP : nx = notemax
+	repeat
+		noteget get_data , nl
+		if get_data != "" {
+			if peek(get_data,0) = 91 {
+				getstr n , get_data , 1 , ']' : n = int(n)
+				if n >= 0000 & n <= 9999 {
+					getstr app_name , get_data , 14 , '\n'
+					noteget get_data , nl+1
+					getstr app_path , get_data , 14 , '\n'
+					app(n) = app_path
+					if nx != nl+2 { ne = "\n" } else { ne = "" }
+					app_list += "["+strf("%04d",n)+"] "+app_name+ne
+					nl += 2
+				} else {
+					getstr app_name , get_data , 14 , '\n'
+					noteget get_data , nl+1
+					getstr app_path , get_data , 14 , '\n'
+					if nx != nl+2 { ne = "\n" } else { ne = "" }
+					app_list += "[NULL] "+app_name+ne
+					nl += 2
+				}
+			} else {
+				if nx != nl+1 { ne = "\n" } else { ne = "" }
+				app_list += ""+get_data+ne
+				nl += 1
+			}
+		} else {
+			if nx != nl+1 { ne = "\n" } else { ne = "" }
+			app_list += ne
+			nl += 1
+		}
+		if nx = nl : break
+	loop
+return
+; エンターキーでアプリケーションを起動
+*checkEnterKey
+	if wparam = 13 & ginfo(2) != -1 {
+		objsel -1
+		if stat != 0 : goto *runApp
+	}
+return
+; アプリケーションを起動
+*runApp
+	n  = -1
+	ns = -1
+	gosub *getTimeCode
+	switch stat
+		case 1 : ns = 0 : n = int(set_app_1) : swbreak
+		case 2 : ns = 1 : n = int(set_app_2) : swbreak
+		case 3 : ns = 2 : n = int(set_app_3) : swbreak
+		case 4 : ns = 0 : n = int(set_app_1) : swbreak
+		case 5 : ns = 1 : n = int(set_app_2) : swbreak
+		case 6 : ns = 2 : n = int(set_app_3) : swbreak
+	swend
+	if n >= 0000 & n <= 9999 {
+		if app(n) != "" {
+			ex = getpath(app(n),2) : ex = strmid(ex,0,4)
+			if ex = ".exe" { app_type = 0 } else { app_type = 1 }
+			if app_type =  0 {
+				exist getpath(app(n),1)+".exe"
+				if strsize != -1 {
+					exec app(n) , 0
+					app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] を起動しました"
+				} else {
+					exist dirP+getpath(app(n),1)+".exe"
+					if strsize != -1 {
+						exec dirP+app(n) , 0
+						app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] を起動しました"
+					} else {
+						dialog "["+strf("%04d",n)+"]\nファイルが存在しません！" , 1 , "起動エラー"
+						app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] の起動に失敗しました"
+					}
+				}
+			}
+			if app_type = 1 {
+				exec app(n) , 16
+				app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] を起動しました"
+			}
+		} else {
+			dialog "["+strf("%04d",n)+"]\nパスが空白です！" , 1 , "起動エラー"
+			app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] の起動に失敗しました"
+		}
+	} else {
+		dialog "["+n+"]\nこの番号は存在しません！" , 1 , "起動エラー"
+		app_mes(ns) = ""+time+" [NULL] の起動に失敗しました"
+	}
+goto *MainD
+; カレントフォルダーを開く
+*openDirPath
+	exec dirP , 16
+	gosub *getTimeCode
+	app_mes(3) = ""+time+" ｶﾚﾝﾄﾌｫﾙﾀﾞｰを開きました"
+goto *MainD
+*getTimeCode
+	timeH = strf("%02d",gettime(4))
+	timeM = strf("%02d",gettime(5))
+	timeS = strf("%02d",gettime(6))
+	time  = ""+timeH+":"+timeM+":"+timeS+"
+return
+
+*EoF_App

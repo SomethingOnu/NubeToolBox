@@ -1,0 +1,55 @@
+; 初期変数
+sdim random_string , 2048
+random_string_option_row   = 1
+random_string_option_digit = 8
+random_string_option_ul    = 1
+random_string_option_ll    = 1
+random_string_option_num   = 1
+random_string_option_sym   = 0
+
+goto *EoF_generateRandomString
+
+; 乱数を生成
+*generateRandomString
+	sdim random_string , 2048
+	row   = 1
+	digit = 1
+	if random_string_option_row = 0 | random_string_option_digit = 0 {
+		dialog "行数・文字数が0に指定されています！" , 1 , "生成エラー"
+		return
+	}
+	if random_string_option_ul = 0 & random_string_option_ll = 0 & random_string_option_num = 0 & random_string_option_sym = 0 {
+		dialog "生成する文字がありません！" , 1 , "生成エラー"
+		return
+	}
+	randomize
+	repeat
+		buf = ""
+		dice = rnd(4)
+		switch dice
+			case 0 : if random_string_option_ul  = 1 : poke buf,0,65+rnd(26)        : swbreak
+			case 1 : if random_string_option_ll  = 1 : poke buf,0,97+rnd(26)        : swbreak
+			case 2 : if random_string_option_num = 1 : poke buf,0,48+rnd(10)        : swbreak
+			case 3 : if random_string_option_sym = 1 : buf = strmid(char,rnd(29),1) : swbreak
+		swend
+		if buf != "" {
+			random_string += buf
+			if digit = random_string_option_digit {
+				if row = random_string_option_row {
+					break
+				} else {
+					random_string += "\n"
+					row += 1 : digit = 0
+				}
+			}
+			digit += 1
+		}
+	loop
+	reload = 1
+return
+; 乱数をコピー
+*copyRandomString
+	ClipB_SetText random_string
+return
+
+*EoF_generateRandomString

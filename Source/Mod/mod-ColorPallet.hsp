@@ -1,0 +1,89 @@
+// #include "mod-ClipboardController.hsp"
+
+; 初期変数
+color_hex = ""
+color_rgb = ""
+
+goto *EoF_ColorPallet
+
+; カラーパレットを開く
+*openColorPallet
+	dialog "" , 33 , ""
+	if stat = 1 {
+		color_hex = "#"+strf("%02x",ginfo_r)+strf("%02x",ginfo_g)+strf("%02x",ginfo_b)
+		color_rgb = ""+ginfo_r+","+ginfo_g+","+ginfo_b
+	}
+	reload = 1
+return
+; 16進数・RGB値を表示色へ変換
+*getColorPallet
+	color_hex_r = 0 : color_hex_g = 0 : color_hex_b = 0
+	color_rgb_r = 0 : color_rgb_g = 0 : color_rgb_b = 0
+	if strmid(color_hex,0,1) = "#" {
+		color_hex_r = strmid(color_hex,1,2)
+		color_hex_g = strmid(color_hex,3,2)
+		color_hex_b = strmid(color_hex,5,2)
+		color_hex_r = int("$"+color_hex_r)
+		color_hex_g = int("$"+color_hex_g)
+		color_hex_b = int("$"+color_hex_b)
+	} else {
+		color_hex_r = 0 : color_hex_g = 0 : color_hex_b = 0
+	}
+	n = 0
+	getstr color_rgb_r , color_rgb , n , ','
+	n += strsize
+	getstr color_rgb_g , color_rgb , n , ','
+	n += strsize
+	getstr color_rgb_b , color_rgb , n , ','
+	color_rgb_r = int(color_rgb_r)
+	color_rgb_g = int(color_rgb_g)
+	color_rgb_b = int(color_rgb_b)
+	if color_rgb_r >= 0 & color_rgb_g >= 0 & color_rgb_b >= 0 & color_rgb_r <= 255 & color_rgb_g <= 255 & color_rgb_b <= 255 {
+		color_rgb_r = int(color_rgb_r)
+		color_rgb_g = int(color_rgb_g)
+		color_rgb_b = int(color_rgb_b)
+	} else {
+		color_rgb_r = 0 : color_rgb_g = 0 : color_rgb_b = 0
+	}
+return
+; 16進数をRGB値へ
+*convertColorHEXtoRGB
+	color_r = "" : color_g = "" : color_b = ""
+	if strmid(color_hex,0,1) = "#" {
+		color_r = strmid(color_hex,1,2)
+		color_g = strmid(color_hex,3,2)
+		color_b = strmid(color_hex,5,2)
+		color_rgb = "" + int("$"+color_r) + "," + int("$"+color_g) + "," + int("$"+color_b)
+	} else {
+		color_rgb = "NULL"
+	}
+	reload = 1
+return
+; RGB値を16進数へ
+*convertColorRGBtoHEX
+	color_r = "" : color_g = "" : color_b = ""
+	n = 0
+	getstr color_r , color_rgb , n , ','
+	n += strsize
+	getstr color_g , color_rgb , n , ','
+	n += strsize
+	getstr color_b , color_rgb , n , ','
+	color_r = int(color_r)
+	color_g = int(color_g)
+	color_b = int(color_b)
+	if color_r >= 0 & color_g >= 0 & color_b >= 0 & color_r <= 255 & color_g <= 255 & color_b <= 255 {
+		color_hex = "#" + strf("%02x",color_r) + strf("%02x",color_g) + strf("%02x",color_b)
+	} else {
+		color_hex = "NULL"
+	}
+	reload = 1
+return
+; カラーコードをクリップボードにコピー
+*copyColorHEX
+	ClipB_SetText color_hex
+return
+*copyColorRGB
+	ClipB_SetText color_rgb
+return
+
+*EoF_ColorPallet

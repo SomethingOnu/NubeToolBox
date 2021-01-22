@@ -1,0 +1,158 @@
+; 初期変数
+ascii_digit = "Number"
+ascii_code  = "Code"
+sdim ascii_code_list , 2048
+
+goto *EoF_AsciiCodeList
+
+; ASCIIコードを取得
+*searchAsciiCode
+	switch ascii_digit
+		case   0 : ascii_code = "[NULL]"
+		case   1 : ascii_code = "[SOH]" : swbreak
+		case   2 : ascii_code = "[STX]" : swbreak
+		case   3 : ascii_code = "[ETX]" : swbreak
+		case   4 : ascii_code = "[EOT]" : swbreak
+		case   5 : ascii_code = "[ENG]" : swbreak
+		case   6 : ascii_code = "[ACK]" : swbreak
+		case   7 : ascii_code = "[BEL]" : swbreak
+		case   8 : ascii_code = "[BS]"  : swbreak
+		case   9 : ascii_code = "[HT]"  : swbreak
+		case  10 : ascii_code = "[LF]"  : swbreak
+		case  11 : ascii_code = "[VT]"  : swbreak
+		case  12 : ascii_code = "[FF]"  : swbreak
+		case  13 : ascii_code = "[CR]"  : swbreak
+		case  14 : ascii_code = "[SO]"  : swbreak
+		case  15 : ascii_code = "[SI]"  : swbreak
+		case  16 : ascii_code = "[DLE]" : swbreak
+		case  17 : ascii_code = "[DC1]" : swbreak
+		case  18 : ascii_code = "[DC2]" : swbreak
+		case  19 : ascii_code = "[DC3]" : swbreak
+		case  20 : ascii_code = "[DC4]" : swbreak
+		case  21 : ascii_code = "[NAK]" : swbreak
+		case  22 : ascii_code = "[SYN]" : swbreak
+		case  23 : ascii_code = "[ETB]" : swbreak
+		case  24 : ascii_code = "[CAN]" : swbreak
+		case  25 : ascii_code = "[EM]"  : swbreak
+		case  26 : ascii_code = "[SUB]" : swbreak
+		case  27 : ascii_code = "[ESC]" : swbreak
+		case  28 : ascii_code = "[FS]"  : swbreak
+		case  29 : ascii_code = "[GS]"  : swbreak
+		case  30 : ascii_code = "[RS]"  : swbreak
+		case  31 : ascii_code = "[US]"  : swbreak
+		case  32 : ascii_code = "[SP]"  : swbreak
+		case  33 : ascii_code = "!" : swbreak
+		case  34 : ascii_code = "X" : poke ascii_code,0,34 : swbreak
+		case  35 : ascii_code = "#" : swbreak
+		case  36 : ascii_code = "$" : swbreak
+		case  37 : ascii_code = "%" : swbreak
+		case  38 : ascii_code = "&" : swbreak
+		case  39 : ascii_code = "'" : swbreak
+		case  40 : ascii_code = "(" : swbreak
+		case  41 : ascii_code = ")" : swbreak
+		case  42 : ascii_code = "*" : swbreak
+		case  43 : ascii_code = "+" : swbreak
+		case  44 : ascii_code = "," : swbreak
+		case  45 : ascii_code = "-" : swbreak
+		case  46 : ascii_code = "." : swbreak
+		case  47 : ascii_code = "/" : swbreak
+		case  48 : ascii_code = "0" : swbreak
+		case  49 : ascii_code = "1" : swbreak
+		case  50 : ascii_code = "2" : swbreak
+		case  51 : ascii_code = "3" : swbreak
+		case  52 : ascii_code = "4" : swbreak
+		case  53 : ascii_code = "5" : swbreak
+		case  54 : ascii_code = "6" : swbreak
+		case  55 : ascii_code = "7" : swbreak
+		case  56 : ascii_code = "8" : swbreak
+		case  57 : ascii_code = "9" : swbreak
+		case  58 : ascii_code = ":" : swbreak
+		case  59 : ascii_code = ";" : swbreak
+		case  60 : ascii_code = "<" : swbreak
+		case  61 : ascii_code = "=" : swbreak
+		case  62 : ascii_code = ">" : swbreak
+		case  63 : ascii_code = "?" : swbreak
+		case  64 : ascii_code = "@" : swbreak
+		case  65 : ascii_code = "A" : swbreak
+		case  66 : ascii_code = "B" : swbreak
+		case  67 : ascii_code = "C" : swbreak
+		case  68 : ascii_code = "D" : swbreak
+		case  69 : ascii_code = "E" : swbreak
+		case  70 : ascii_code = "F" : swbreak
+		case  71 : ascii_code = "G" : swbreak
+		case  72 : ascii_code = "H" : swbreak
+		case  73 : ascii_code = "I" : swbreak
+		case  74 : ascii_code = "J" : swbreak
+		case  75 : ascii_code = "K" : swbreak
+		case  76 : ascii_code = "L" : swbreak
+		case  77 : ascii_code = "M" : swbreak
+		case  78 : ascii_code = "N" : swbreak
+		case  79 : ascii_code = "O" : swbreak
+		case  80 : ascii_code = "P" : swbreak
+		case  81 : ascii_code = "Q" : swbreak
+		case  82 : ascii_code = "R" : swbreak
+		case  83 : ascii_code = "S" : swbreak
+		case  84 : ascii_code = "T" : swbreak
+		case  85 : ascii_code = "U" : swbreak
+		case  86 : ascii_code = "V" : swbreak
+		case  87 : ascii_code = "W" : swbreak
+		case  88 : ascii_code = "X" : swbreak
+		case  89 : ascii_code = "Y" : swbreak
+		case  90 : ascii_code = "Z" : swbreak
+		case  91 : ascii_code = "[" : swbreak
+		case  92 : ascii_code = "X" : poke ascii_code,0,92 : swbreak
+		case  93 : ascii_code = "]" : swbreak
+		case  94 : ascii_code = "^" : swbreak
+		case  95 : ascii_code = "_" : swbreak
+		case  96 : ascii_code = "`" : swbreak
+		case  97 : ascii_code = "a" : swbreak
+		case  98 : ascii_code = "b" : swbreak
+		case  99 : ascii_code = "c" : swbreak
+		case 100 : ascii_code = "d" : swbreak
+		case 101 : ascii_code = "e" : swbreak
+		case 102 : ascii_code = "f" : swbreak
+		case 103 : ascii_code = "g" : swbreak
+		case 104 : ascii_code = "h" : swbreak
+		case 105 : ascii_code = "i" : swbreak
+		case 106 : ascii_code = "j" : swbreak
+		case 107 : ascii_code = "k" : swbreak
+		case 108 : ascii_code = "l" : swbreak
+		case 109 : ascii_code = "m" : swbreak
+		case 110 : ascii_code = "n" : swbreak
+		case 111 : ascii_code = "o" : swbreak
+		case 112 : ascii_code = "p" : swbreak
+		case 113 : ascii_code = "q" : swbreak
+		case 114 : ascii_code = "r" : swbreak
+		case 115 : ascii_code = "s" : swbreak
+		case 116 : ascii_code = "t" : swbreak
+		case 117 : ascii_code = "u" : swbreak
+		case 118 : ascii_code = "v" : swbreak
+		case 119 : ascii_code = "w" : swbreak
+		case 120 : ascii_code = "x" : swbreak
+		case 121 : ascii_code = "y" : swbreak
+		case 122 : ascii_code = "z" : swbreak
+		case 123 : ascii_code = "{" : swbreak
+		case 124 : ascii_code = "|" : swbreak
+		case 125 : ascii_code = "}" : swbreak
+		case 126 : ascii_code = "~" : swbreak
+		case 127 : ascii_code = "[DEL]" : swbreak
+	swend
+return
+; ASCIIコード一覧を作成
+*makeAsciiCodeList
+	n = 0
+	repeat 128
+		ascii_digit = n
+		gosub *searchAsciiCode
+		if n != 127 {
+			ascii_code_list += ""+strf("%03d",ascii_digit)+" - "+ascii_code+"\n"
+		} else {
+			ascii_code_list += ""+strf("%03d",ascii_digit)+" - "+ascii_code
+		}
+		n += 1
+	loop
+	ascii_digit = "Number"
+	ascii_code  = "Code"
+return
+
+*EoF_AsciiCodeList

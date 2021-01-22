@@ -1,0 +1,61 @@
+; 初期変数
+sdim music_folderP , 128
+music_fileI = 0
+music_fileN = 0
+music_vol         = 50.00
+music_vol_balance = 50.00
+music_bass        =  0.00
+music_treble      =  0.00
+fps = 30
+configP = dirP + "/Config.ini"
+
+goto *EoF_Config
+
+; コンフィグファイルを確認
+*checkConfig
+	notesel cacheA
+	exist configP
+	; コンフィグファイルがない場合は作成
+	if strsize = -1 {
+		noteadd "Music Folder Path = "
+		noteadd ""
+		noteadd "Number of Music        = -1"
+		noteadd "Index of Playing Music = -1"
+		noteadd ""
+		noteadd "Sound Volume         = 50"
+		noteadd "Sound Volume Balance = 50"
+		noteadd "Sound Bass           = 50"
+		noteadd "Sound Treble         = 50"
+		noteadd ""
+		noteadd "FPS = 30"
+		notesave configP
+	}
+return
+; コンフィグファイルを読み込む
+*loadConfig
+	noteload configP
+	nl  = 0
+	noteget get_data , nl : getstr music_folderP     , get_data , 17+3 , '\n' : nl += 1
+	nl += 1
+	noteget get_data , nl : getstr music_fileI       , get_data , 22+3 , '\n' : nl += 1 : music_fileI       = int(music_fileN)
+	noteget get_data , nl : getstr music_fileN       , get_data , 22+3 , '\n' : nl += 1 : music_fileI       = int(music_fileN)
+	nl += 1
+	noteget get_data , nl : getstr music_vol         , get_data , 20+3 , '\n' : nl += 1 : music_vol         = double(music_vol)
+	noteget get_data , nl : getstr music_vol_balance , get_data , 20+3 , '\n' : nl += 1 : music_vol_balance = double(music_vol_balance)
+	noteget get_data , nl : getstr music_bass        , get_data , 20+3 , '\n' : nl += 1 : music_bass        = double(music_bass)
+	noteget get_data , nl : getstr music_treble      , get_data , 20+3 , '\n' : nl += 1 : music_treble      = double(music_treble)
+	nl += 1
+	noteget get_data , nl : getstr fps               , get_data ,  3+3 , '\n'           : fps               = int(fps)
+return
+; コンフィグファイルを保存
+*saveConfig
+	notesel cacheA
+	nl  = 0
+	noteadd "Music Folder Path = " + music_folderP    , nl , 1 : nl += 1
+	noteadd ""                                        , nl , 1 : nl += 1
+	noteadd "Number of Music        = " + music_fileI , nl , 1 : nl += 1
+	noteadd "Index of Playing Music = " + music_fileN , nl , 1
+	notesave configP
+return
+
+*EoF_Config

@@ -1,0 +1,39 @@
+; 初期変数
+sdim convert_stringA , 2048
+sdim convert_stringB , 2048
+
+goto *EoF_convertString
+
+; ボックスAからボックスBへ変換
+*convertStringAtoB
+	
+return
+
+; ボックスBからボックスAへ変換
+*convertStringBtoA
+	
+return
+; 変換するテキストを開く
+*openConvertString
+	dialog "txt" , 16 , "テキストファイル"
+	if stat = 1 {
+		notesel convert_stringA
+		noteload refstr
+	}
+	reload = 1
+return
+; 変換するテキストを名前を付けて保存
+*saveConvertString
+	dialog "txt" , 17 , "テキストファイル"
+	if stat = 1 {
+		notesel convert_stringB
+		notesave refstr
+	}
+	reload = 1
+return
+; 変換するテキストをコピー
+*copyConvertString
+	ClipB_SetText convert_stringB
+return
+
+*EoF_convertString

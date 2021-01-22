@@ -1,0 +1,171 @@
+; 初期変数
+input_key_code = "Code"
+input_key_name = "Key"
+sdim key_code_list , 2048
+
+goto *EoF_KeyCodeList
+
+; 入力されたキーを取得
+*getKeyCode
+	input_key_code = iparam
+	gosub *searchInputKeyName
+return
+; キーコードから名前を取得
+*searchInputKeyName
+	if input_key_code = 0 : input_key_code = "?" : input_key_name = "Unknown"
+	switch input_key_code
+		case   1 : input_key_name = "マウスの左ボタン"           : swbreak
+		case   2 : input_key_name = "マウスの右ボタン"           : swbreak
+		case   3 : input_key_name = "キャンセル／[CTRL]+[BREAK]" : swbreak
+		case   4 : input_key_name = "マウスの中ボタン"           : swbreak
+		case   5 : input_key_name = "Unknown" : swbreak
+		case   6 : input_key_name = "Unknown" : swbreak
+		case   7 : input_key_name = "Unknown" : swbreak
+		case   8 : input_key_name = "[BACKSPACE]"  : swbreak
+		case   9 : input_key_name = "[TAB]"        : swbreak
+		case  10 : input_key_name = "Unknown" : swbreak
+		case  11 : input_key_name = "Unknown" : swbreak
+		case  12 : input_key_name = "Unknown" : swbreak
+		case  13 : input_key_name = "[ENTER]"      : swbreak
+		case  14 : input_key_name = "Unknown" : swbreak
+		case  15 : input_key_name = "Unknown" : swbreak
+		case  16 : input_key_name = "[SHIFT]"      : swbreak
+		case  17 : input_key_name = "[CTRL]"       : swbreak
+		case  18 : input_key_name = "[ALT]"        : swbreak
+		case  19 : input_key_name = "Unknown" : swbreak
+		case  20 : input_key_name = "[CAPSLOCK]"   : swbreak
+		case  21 : input_key_name = "Unknown" : swbreak
+		case  22 : input_key_name = "Unknown" : swbreak
+		case  23 : input_key_name = "Unknown" : swbreak
+		case  24 : input_key_name = "Unknown" : swbreak
+		case  25 : input_key_name = "Unknown" : swbreak
+		case  26 : input_key_name = "Unknown" : swbreak
+		case  27 : input_key_name = "[ESC]"        : swbreak
+		case  28 : input_key_name = "Unknown" : swbreak
+		case  29 : input_key_name = "Unknown" : swbreak
+		case  30 : input_key_name = "Unknown" : swbreak
+		case  31 : input_key_name = "Unknown" : swbreak
+		case  32 : input_key_name = "スペースキー" : swbreak
+		case  33 : input_key_name = "[PAGEUP]"     : swbreak
+		case  34 : input_key_name = "[PAGEDOWN]"   : swbreak
+		case  35 : input_key_name = "[END]"        : swbreak
+		case  36 : input_key_name = "[HOME]"       : swbreak
+		case  37 : input_key_name = "カーソルキー[←]" : swbreak
+		case  38 : input_key_name = "カーソルキー[↑]" : swbreak
+		case  39 : input_key_name = "カーソルキー[→]" : swbreak
+		case  40 : input_key_name = "カーソルキー[↓]" : swbreak
+		case  41 : input_key_name = "Unknown" : swbreak
+		case  42 : input_key_name = "[*]" : swbreak
+		case  43 : input_key_name = "[+]" : swbreak
+		case  44 : input_key_name = "[,]" : swbreak
+		case  45 : input_key_name = "[-]" : swbreak
+		case  46 : input_key_name = "[.]" : swbreak
+		case  47 : input_key_name = "[/]" : swbreak
+		case  48 : input_key_name = "[0]" : swbreak
+		case  49 : input_key_name = "[1]" : swbreak
+		case  50 : input_key_name = "[2]" : swbreak
+		case  51 : input_key_name = "[3]" : swbreak
+		case  52 : input_key_name = "[4]" : swbreak
+		case  53 : input_key_name = "[5]" : swbreak
+		case  54 : input_key_name = "[6]" : swbreak
+		case  55 : input_key_name = "[7]" : swbreak
+		case  56 : input_key_name = "[8]" : swbreak
+		case  57 : input_key_name = "[9]" : swbreak
+		case  58 : input_key_name = "[:]" : swbreak
+		case  59 : input_key_name = "[;]" : swbreak
+		case  60 : input_key_name = "Unknown" : swbreak
+		case  61 : input_key_name = "Unknown" : swbreak
+		case  62 : input_key_name = "Unknown" : swbreak
+		case  63 : input_key_name = "Unknown" : swbreak
+		case  64 : input_key_name = "[@]" : swbreak
+		case  65 : input_key_name = "[A]" : swbreak
+		case  66 : input_key_name = "[B]" : swbreak
+		case  67 : input_key_name = "[C]" : swbreak
+		case  68 : input_key_name = "[D]" : swbreak
+		case  69 : input_key_name = "[E]" : swbreak
+		case  70 : input_key_name = "[F]" : swbreak
+		case  71 : input_key_name = "[G]" : swbreak
+		case  72 : input_key_name = "[H]" : swbreak
+		case  73 : input_key_name = "[I]" : swbreak
+		case  74 : input_key_name = "[J]" : swbreak
+		case  75 : input_key_name = "[K]" : swbreak
+		case  76 : input_key_name = "[L]" : swbreak
+		case  77 : input_key_name = "[M]" : swbreak
+		case  78 : input_key_name = "[N]" : swbreak
+		case  79 : input_key_name = "[O]" : swbreak
+		case  80 : input_key_name = "[P]" : swbreak
+		case  81 : input_key_name = "[Q]" : swbreak
+		case  82 : input_key_name = "[R]" : swbreak
+		case  83 : input_key_name = "[S]" : swbreak
+		case  84 : input_key_name = "[T]" : swbreak
+		case  85 : input_key_name = "[U]" : swbreak
+		case  86 : input_key_name = "[V]" : swbreak
+		case  87 : input_key_name = "[W]" : swbreak
+		case  88 : input_key_name = "[X]" : swbreak
+		case  89 : input_key_name = "[Y]" : swbreak
+		case  90 : input_key_name = "[Z]" : swbreak
+		case  91 : input_key_name = "'['" : swbreak
+		case  92 : input_key_name = "[X]" : poke input_key_name,1,92 : swbreak
+		case  93 : input_key_name = "']'" : swbreak
+		case  94 : input_key_name = "[^]" : swbreak
+		case  95 : input_key_name = "Unknown" : swbreak
+		case  96 : input_key_name = "テンキー[0]" : swbreak
+		case  97 : input_key_name = "テンキー[1]" : swbreak
+		case  98 : input_key_name = "テンキー[2]" : swbreak
+		case  99 : input_key_name = "テンキー[3]" : swbreak
+		case 100 : input_key_name = "テンキー[4]" : swbreak
+		case 101 : input_key_name = "テンキー[5]" : swbreak
+		case 102 : input_key_name = "テンキー[6]" : swbreak
+		case 103 : input_key_name = "テンキー[7]" : swbreak
+		case 104 : input_key_name = "テンキー[8]" : swbreak
+		case 105 : input_key_name = "テンキー[9]" : swbreak
+		case 106 : input_key_name = "Unknown" : swbreak
+		case 107 : input_key_name = "Unknown" : swbreak
+		case 108 : input_key_name = "Unknown" : swbreak
+		case 109 : input_key_name = "Unknown" : swbreak
+		case 110 : input_key_name = "Unknown" : swbreak
+		case 111 : input_key_name = "Unknown" : swbreak
+		case 112 : input_key_name = "ファンクションキー[F1]"  : swbreak
+		case 113 : input_key_name = "ファンクションキー[F2]"  : swbreak
+		case 114 : input_key_name = "ファンクションキー[F3]"  : swbreak
+		case 115 : input_key_name = "ファンクションキー[F4]"  : swbreak
+		case 116 : input_key_name = "ファンクションキー[F5]"  : swbreak
+		case 117 : input_key_name = "ファンクションキー[F6]"  : swbreak
+		case 118 : input_key_name = "ファンクションキー[F7]"  : swbreak
+		case 119 : input_key_name = "ファンクションキー[F8]"  : swbreak
+		case 120 : input_key_name = "ファンクションキー[F9]"  : swbreak
+		case 121 : input_key_name = "ファンクションキー[F10]" : swbreak
+		case 122 : input_key_name = "ファンクションキー[F11]" : swbreak
+		case 123 : input_key_name = "ファンクションキー[F12]" : swbreak
+		case 124 : input_key_name = "ファンクションキー[F13]" : swbreak
+		case 125 : input_key_name = "ファンクションキー[F14]" : swbreak
+		case 126 : input_key_name = "ファンクションキー[F15]" : swbreak
+		case 127 : input_key_name = "ファンクションキー[F16]" : swbreak
+		case 128 : input_key_name = "ファンクションキー[F17]" : swbreak
+		case 129 : input_key_name = "ファンクションキー[F18]" : swbreak
+		case 130 : input_key_name = "ファンクションキー[F19]" : swbreak
+		case 131 : input_key_name = "ファンクションキー[F20]" : swbreak
+		case 132 : input_key_name = "ファンクションキー[F21]" : swbreak
+		case 133 : input_key_name = "ファンクションキー[F22]" : swbreak
+		case 134 : input_key_name = "ファンクションキー[F23]" : swbreak
+		case 135 : input_key_name = "ファンクションキー[F24]" : swbreak
+	swend
+return
+; キーコード一覧を作成
+*makeKeyCodeList
+	n = 0
+	repeat 136
+		input_key_code = n
+		gosub *searchInputKeyName
+		if n != 135 {
+			key_code_list += ""+strf("%03d",input_key_code)+" - "+input_key_name+"\n"
+		} else {
+			key_code_list += ""+strf("%03d",input_key_code)+" - "+input_key_name
+		}
+		n += 1
+	loop
+	input_key_code = "Code"
+	input_key_name = "Key"
+return
+
+*EoF_KeyCodeList

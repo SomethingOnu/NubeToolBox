@@ -1,0 +1,150 @@
+; 初期変数
+sdim free_space , 2048
+
+goto *EoF_System
+
+; ダミーラベル(未開発機能)
+*gotoDummyLabel
+	dialog "この機能は未開発です"
+goto *Redirect
+*gosubDummyLabel
+	dialog "この機能は未開発です"
+return
+; 常に前面に表示する・しない
+*changeWindowActive
+	switch window_active
+		case 0 : gsel 0,2 : window_active = 1 : swbreak
+		case 1 : gsel 0,1 : window_active = 0 : swbreak
+	swend
+	reload = 1
+return
+; マウス操作
+*commandMouse
+	getkey get_click , 1
+	if get_click = 1 {
+		if mousex >= double(16*x/10) & mousey >= double(16*y/10) & mousex <= double(16*(x+xt)/10) & mousey <= double(16*(y+yt)/10) {
+			if ginfo(2) != -1 : move_page = 1
+		}
+	}
+return
+; CPU・RAM使用率を取得
+*getSystemInfo
+	if tick_update = 1 {
+		cpu_usage = GetIntCPU()
+		ram_usage = sysinfo(33)
+	}
+return
+; タスクマネージャーを開く
+*openTaskManager
+	
+goto *MainA
+; 拡大鏡を開く
+*openMagnifyingGlass
+	
+goto *MainA
+; フリースペースを開く
+*openFreeSpace
+	dialog "txt" , 16 , "テキストファイル"
+	if stat = 1 {
+		notesel free_space
+		noteload refstr
+	}
+	reload = 1
+return
+; フリースペースを名前を付けて保存
+*saveFreeSpace
+	dialog "txt" , 17 , "テキストファイル"
+	if stat = 1 {
+		notesel free_space
+		notesave refstr
+	}
+	reload = 1
+return
+; フリースペースをコピー
+*copyFreeSpace
+	ClipB_SetText free_space
+return
+; キーコード一覧を開く
+*openKeyCodeList
+	if flag_key_code_list = 0 {
+		screen 1 , winX,winY , 4 , winX+posX+12,posY
+		title "キーコード一覧"
+		font "ＭＳ ゴシック" , 14
+		gosub *makeKeyCodeList
+		pos 0,0
+		objmode 2
+		mesbox key_code_list , winX,winY , 0
+		gsel 0
+		flag_key_code_list = 1
+	}
+goto *MainA
+; 16進数表を開く
+*openColorList
+	if flag_color_list = 0 {
+		screen 2 , winX,winY , 4 , winX+posX+12,posY
+		title "16進数表"
+		font "ＭＳ ゴシック" , 14
+		pos 0,0
+		objmode 2
+		notesel color_list
+		noteload "doc-ColorList.txt"
+		mesbox color_list , winX,winY , 0
+		gsel 0
+		flag_color_list = 1
+	}
+goto *MainB
+; ASCIIコード一覧を開く
+*openAsciiCodeList
+	if flag_ascii_code_list = 0 {
+		screen 3 , winX,winY , 4 , winX+posX+12,posY
+		title "ASCIIコード一覧"
+		font "ＭＳ ゴシック" , 14
+		gosub *makeAsciiCodeList
+		pos 0,0
+		objmode 2
+		mesbox ascii_code_list , winX,winY , 0
+		gsel 0
+		flag_ascii_code_list = 1
+	}
+goto *MainC
+; エンターキーでアプリケーションを起動
+*checkKey
+	if page = 4 & wparam = 13 & ginfo(2) != -1 {
+		objsel -1
+		goto *runApp
+	}
+return
+; 終了
+*exitA
+	dialog "終了しますか？" , 2 , "確認"
+	if stat = 7 : goto *Redirect
+	gosub *saveConfig
+end
+*exitB
+	if wparam = 0 {
+		dialog "終了しますか？" , 2 , "確認"
+		if stat = 6 {
+			gosub *saveConfig
+			end
+		}
+	}
+	if wparam = 1 {
+		flag_key_code_list = 0
+		gsel wparam , -1 : gsel 0
+	}
+	if wparam = 2 {
+		flag_color_list = 0
+		gsel wparam , -1 : gsel 0
+	}
+	if wparam = 3 {
+		flag_ascii_code_list = 0
+		gsel wparam , -1 : gsel 0
+	}
+return
+; 終了(エラー発生)
+*exitError
+	gosub *saveConfig
+	dialog "" + lparam + "行でエラー" + wparam + "が発生しました"
+end
+
+*EoF_System

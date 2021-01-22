@@ -1,0 +1,65 @@
+;オプション
+counter_button_id = 17 ; カウンターに関連するオブジェクトIDの初期値
+; 初期変数
+counterA = 0
+counterB = 0
+counterC = 0
+
+goto *EoF_Counter
+
+; カウンターに+1する
+*plusCount
+	switch stat
+		case counter_button_id+1
+			counterA = int(counterA)
+			counterA += 1
+		swbreak
+		case counter_button_id+5
+			counterB = int(counterB)
+			counterB += 1
+		swbreak
+		case counter_button_id+9
+			counterC = int(counterC)
+			counterC += 1
+		swbreak
+	swend
+	reload = 1
+return
+; カウンターに-1する
+*minusCount
+	switch stat
+		case counter_button_id+2
+			counterA = int(counterA)
+			counterA -= 1
+		swbreak
+		case counter_button_id+6
+			counterB = int(counterB)
+			counterB -= 1
+		swbreak
+		case counter_button_id+10
+			counterC = int(counterC)
+			counterC -= 1
+		swbreak
+	swend
+	reload = 1
+return
+; カウンターをリセットする
+*resetCount
+	switch stat
+		case counter_button_id+3
+			counterA = int(counterA)
+			counterA = 0
+		swbreak
+		case counter_button_id+7
+			counterB = int(counterB)
+			counterB = 0
+		swbreak
+		case counter_button_id+11
+			counterC = int(counterC)
+			counterC = 0
+		swbreak
+	swend
+	reload = 1
+return
+
+*EoF_Counter
