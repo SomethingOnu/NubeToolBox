@@ -55,6 +55,7 @@ return
 				nl += 1
 			}
 		} else {
+			if nx = 0 : break
 			if nx != nl+1 { ne = "\n" } else { ne = "" }
 			app_list += ne
 			nl += 1

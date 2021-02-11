@@ -17,8 +17,8 @@
 
 ## ダウンロード
 
-- [Nube Tool Box 最新版](https://github.com/SomethingOnu/NubeToolBox/releases/download/1.0.0/Nube_Tool_Box_1.0.0.zip)
-- [Nube Tool Box 最新版 (ソース)](https://github.com/SomethingOnu/NubeToolBox/archive/1.0.0.zip)
+- [Nube Tool Box 最新版](https://github.com/SomethingOnu/NubeToolBox/releases/download/1.1.0/Nube_Tool_Box_1.1.0.zip)
+- [Nube Tool Box 最新版 (ソース)](https://github.com/SomethingOnu/NubeToolBox/archive/1.1.0.zip)
 
 
 

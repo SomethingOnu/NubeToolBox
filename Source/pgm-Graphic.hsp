@@ -15,11 +15,18 @@ gosub *EoF_Graphic
 
 ; オブジェクトを描画
 *drawObject
-	ChipObject 100,270 ,  30, 10 : if window_active = 0 {
-	                                   button gosub "通常表示" , *changeWindowActive
+	ChipObject  95,270 ,  13, 10 : if window_active = 0 {
+	                                   button gosub "通常\n表示" , *changeWindowActive
 	                               } else {
-	                                   button gosub "前面表示" , *changeWindowActive
+	                                   button gosub "前面\n表示" , *changeWindowActive
 	                               }
+	SetWindowLong objinfo(stat,2) , -16 , $50000000 | $2000
+	ChipObject 123,270 ,  13, 10 : switch window_pos_style
+	                                   case 0 : button gosub "左上" , *changeWindowPos : swbreak
+	                                   case 1 : button gosub "右上" , *changeWindowPos : swbreak
+	                                   case 2 : button gosub "右下" , *changeWindowPos : swbreak
+	                                   case 3 : button gosub "左下" , *changeWindowPos : swbreak
+	                               swend
 	ChipObject 150,270 ,  30, 10 : button "終了" , *exitA
 return
 *drawObjectA
@@ -143,7 +150,7 @@ return
 	reload = 0
 return
 ; テキストの背景を描画
-*drawTextBackA
+*drawMenuTextBackA
 	color 207,207,207
 	ChipBoxfill    10, 10 ,  50, 10 ; 現在の日付
 	ChipBoxfill    10, 20 ,  50, 10 ; 現在の時刻
@@ -167,7 +174,7 @@ return
 //	color 255,207,207 : ChipBoxfill 102,250 ,  40,10
 //	color 255,207,207 : ChipBoxfill 147,250 ,  40,10
 return
-*drawTextBackB
+*drawMenuTextBackB
 	color 207,207,207
 	ChipBoxfill    10, 10 ,  70, 10 ; フリースペース
 	ChipBoxfill    10,115 ,  60, 10 ; カラーコード
@@ -187,7 +194,7 @@ return
 //	color 255,207,207 : ChipBoxfill 102,250 ,  40,10
 //	color 255,207,207 : ChipBoxfill 147,250 ,  40,10
 return
-*drawTextBackC
+*drawMenuTextBackC
 	color 207,207,207
 	ChipBoxfill    10, 10 ,  40, 10 ; 乱数生成
 	ChipBoxfill    10,125 ,  70, 10 ; 進数・文字変換
@@ -200,7 +207,7 @@ return
 	color 255,143,143 : ChipBoxfill 102,250 ,  40,10
 //	color 255,207,207 : ChipBoxfill 147,250 ,  40,10
 return
-*drawTextBackD
+*drawMenuTextBackD
 	color 207,207,207
 	ChipBoxfill    10, 10 , 100, 10 ; アプリケーション一覧
 	ChipBoxfill    10,215 ,  45, 10 ; コマンド1
@@ -216,7 +223,7 @@ return
 	color 255,143,143 : ChipBoxfill 147,250 ,  40,10
 return
 ; テキストを描画
-*drawTextA
+*drawMenuTextA
 	color 0,0,0
 	ChipPos     10, 10 : mes "現在の日付 "+time_str_year+"年 "+time_str_mon+"月 "+time_str_day+"日 ("+time_str_week+"曜日)"
 	ChipPos     10, 20 : mes "現在の時刻 "+time_str_hour+"時 "+time_str_min+"分 "+time_str_sec+"秒 ("+time_str_m_sec+"ﾐﾘ秒)"
@@ -257,7 +264,7 @@ return
 	ChipPos     35,270 : mes "ページ"
 	ChipPos     43,280 : mes "1/4"
 return
-*drawTextB
+*drawMenuTextB
 	color 0,0,0
 	ChipPos     10, 10 : mes "フリースペース"
 	ChipPos     10,115 : mes "カラーコード"
@@ -281,7 +288,7 @@ return
 	color color_rgb_r,color_rgb_g,color_rgb_b
 	boxf 158,234,158+10,234+10 ; RGB進数
 return
-*drawTextC
+*drawMenuTextC
 	color 0,0,0
 	ChipPos     10, 10 : mes "乱数生成"
 	ChipPos     80, 10 : mes "行"
@@ -292,7 +299,7 @@ return
 	ChipPos     35,270 : mes "ページ"
 	ChipPos     43,280 : mes "3/4"
 return
-*drawTextD
+*drawMenuTextD
 	color 0,0,0
 	ChipPos     10, 10 : mes "アプリケーション一覧"
 	ChipPos     10,215 : mes "コマンド1"

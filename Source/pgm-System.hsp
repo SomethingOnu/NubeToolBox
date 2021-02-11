@@ -18,6 +18,33 @@ return
 	swend
 	reload = 1
 return
+; ウィンドウの位置を変更
+*changeWindowPos
+	switch window_pos_style
+		case 0
+			posX = (ginfo_dispx-winX)-12
+			posY = 12
+			window_pos_style = 1
+		swbreak
+		case 1
+			posX = (ginfo_dispx-winX)-12
+			posY = (ginfo_dispy-winY)-12-taskbarH-24
+			window_pos_style = 2
+		swbreak
+		case 2
+			posX = 12
+			posY = (ginfo_dispy-winY)-12-taskbarH-24
+			window_pos_style = 3
+		swbreak
+		case 3
+			posX = 12
+			posY = 12
+			window_pos_style = 0
+		swbreak
+	swend
+	width winX,winY , posX,posY
+	reload = 1
+return
 ; マウス操作
 *commandMouse
 	getkey get_click , 1

@@ -7,6 +7,8 @@ music_vol_balance = 50.00
 music_bass        =  0.00
 music_treble      =  0.00
 fps = 30
+window_active    = 0
+window_pos_style = 0
 configP = dirP + "/Config.ini"
 
 goto *EoF_Config
@@ -28,6 +30,12 @@ goto *EoF_Config
 		noteadd "Sound Treble         = 50"
 		noteadd ""
 		noteadd "FPS = 30"
+		noteadd ""
+		noteadd "Window Active    = 0"
+		noteadd "Window Pos Style = 0"
+		noteadd ""
+		noteadd "Pos X = 12"
+		noteadd "Pos Y = 12"
 		notesave configP
 	}
 return
@@ -45,7 +53,13 @@ return
 	noteget get_data , nl : getstr music_bass        , get_data , 20+3 , '\n' : nl += 1 : music_bass        = double(music_bass)
 	noteget get_data , nl : getstr music_treble      , get_data , 20+3 , '\n' : nl += 1 : music_treble      = double(music_treble)
 	nl += 1
-	noteget get_data , nl : getstr fps               , get_data ,  3+3 , '\n'           : fps               = int(fps)
+	noteget get_data , nl : getstr fps               , get_data ,  3+3 , '\n' : nl += 1 : fps               = int(fps)
+	nl += 1
+	noteget get_data , nl : getstr window_active     , get_data , 16+3 , '\n' : nl += 1 : window_active     = int(window_active)
+	noteget get_data , nl : getstr window_pos_style  , get_data , 16+3 , '\n' : nl += 1 : window_pos_style  = int(window_pos_style)
+	nl += 1
+	noteget get_data , nl : getstr posX              , get_data ,  5+3 , '\n' : nl += 1 : posX              = int(posX)
+	noteget get_data , nl : getstr posY              , get_data ,  5+3 , '\n' :         : posY              = int(posY)
 return
 ; コンフィグファイルを保存
 *saveConfig
@@ -55,6 +69,13 @@ return
 	noteadd ""                                        , nl , 1 : nl += 1
 	noteadd "Number of Music        = " + music_fileI , nl , 1 : nl += 1
 	noteadd "Index of Playing Music = " + music_fileN , nl , 1
+	nl  = 12
+	posX = ginfo(4) : posY = ginfo(5)
+	noteadd "Window Active    = " + window_active     , nl , 1 : nl += 1
+	noteadd "Window Pos Style = " + window_pos_style  , nl , 1 : nl += 1
+	noteadd ""                                        , nl , 1 : nl += 1
+	noteadd "Pos X = " + posX                         , nl , 1 : nl += 1
+	noteadd "Pos Y = " + posY                         , nl , 1
 	notesave configP
 return
 
