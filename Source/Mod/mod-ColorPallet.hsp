@@ -27,7 +27,12 @@ return
 		color_hex_g = int("$"+color_hex_g)
 		color_hex_b = int("$"+color_hex_b)
 	} else {
-		color_hex_r = 0 : color_hex_g = 0 : color_hex_b = 0
+		color_hex_r = strmid(color_hex,0,2)
+		color_hex_g = strmid(color_hex,2,2)
+		color_hex_b = strmid(color_hex,4,2)
+		color_hex_r = int("$"+color_hex_r)
+		color_hex_g = int("$"+color_hex_g)
+		color_hex_b = int("$"+color_hex_b)
 	}
 	n = 0
 	getstr color_rgb_r , color_rgb , n , ','
@@ -55,7 +60,10 @@ return
 		color_b = strmid(color_hex,5,2)
 		color_rgb = "" + int("$"+color_r) + "," + int("$"+color_g) + "," + int("$"+color_b)
 	} else {
-		color_rgb = "NULL"
+		color_r = strmid(color_hex,0,2)
+		color_g = strmid(color_hex,2,2)
+		color_b = strmid(color_hex,4,2)
+		color_rgb = "" + int("$"+color_r) + "," + int("$"+color_g) + "," + int("$"+color_b)
 	}
 	reload = 1
 return
@@ -72,7 +80,7 @@ return
 	color_g = int(color_g)
 	color_b = int(color_b)
 	if color_r >= 0 & color_g >= 0 & color_b >= 0 & color_r <= 255 & color_g <= 255 & color_b <= 255 {
-		color_hex = "#" + strf("%02x",color_r) + strf("%02x",color_g) + strf("%02x",color_b)
+		color_hex = "" + strf("%02x",color_r) + strf("%02x",color_g) + strf("%02x",color_b)
 	} else {
 		color_hex = "NULL"
 	}

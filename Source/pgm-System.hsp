@@ -94,7 +94,11 @@ return
 ; キーコード一覧を開く
 *openKeyCodeList
 	if flag_key_code_list = 0 {
-		screen 1 , winX,winY , 4 , winX+posX+12,posY
+		if window_pos_style = 0 | window_pos_style = 3 {
+			screen 1 , winX,winY , 4 , winX+posX+12,posY
+		} else {
+			screen 1 , winX,winY , 4 , posX-winX-12-2,posY
+		}
 		title "キーコード一覧"
 		font "ＭＳ ゴシック" , 14
 		gosub *makeKeyCodeList
@@ -108,7 +112,11 @@ goto *MainA
 ; 16進数表を開く
 *openColorList
 	if flag_color_list = 0 {
-		screen 2 , winX,winY , 4 , winX+posX+12,posY
+		if window_pos_style = 0 | window_pos_style = 3 {
+			screen 2 , winX,winY , 4 , winX+posX+12,posY
+		} else {
+			screen 2 , winX,winY , 4 , posX-winX-12-2,posY
+		}
 		title "16進数表"
 		font "ＭＳ ゴシック" , 14
 		pos 0,0
@@ -123,7 +131,11 @@ goto *MainB
 ; ASCIIコード一覧を開く
 *openAsciiCodeList
 	if flag_ascii_code_list = 0 {
-		screen 3 , winX,winY , 4 , winX+posX+12,posY
+		if window_pos_style = 0 | window_pos_style = 3 {
+			screen 3 , winX,winY , 4 , winX+posX+12,posY
+		} else {
+			screen 3 , winX,winY , 4 , posX-winX-12-2,posY
+		}
 		title "ASCIIコード一覧"
 		font "ＭＳ ゴシック" , 14
 		gosub *makeAsciiCodeList

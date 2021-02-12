@@ -17,8 +17,8 @@
 
 ## ダウンロード
 
-- [Nube Tool Box 最新版](https://github.com/SomethingOnu/NubeToolBox/releases/download/1.2.0/Nube_Tool_Box_1.2.0.zip)
-- [Nube Tool Box 最新版 (ソース)](https://github.com/SomethingOnu/NubeToolBox/archive/1.2.0.zip)
+- [Nube Tool Box 最新版](https://github.com/SomethingOnu/NubeToolBox/releases/download/1.3.0/Nube_Tool_Box_1.3.0.zip)
+- [Nube Tool Box 最新版 (ソース)](https://github.com/SomethingOnu/NubeToolBox/archive/1.3.0.zip)
 
 
 
@@ -37,7 +37,7 @@
 
 ## クレジット
 
-- [KexMP3 by](http://www5b.biglobe.ne.jp/~klaus/klaus_soft/DLLforHSP.html#KexMP3_DLL) (C) 1999 KLAUS
+- [KexMP3](http://www5b.biglobe.ne.jp/~klaus/klaus_soft/DLLforHSP.html#KexMP3_DLL) by (C) 1999 KLAUS
 - [mp3infp](http://www.win32lab.com/fsw/mp3infp/) by (C) 1998-2009 T-Matsuo
 
 
