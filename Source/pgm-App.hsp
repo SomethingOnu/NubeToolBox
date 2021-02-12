@@ -4,10 +4,10 @@ set_app_2 = ""
 set_app_3 = ""
 sdim app      ,  128 , 10000
 sdim app_name ,  128
-sdim app_path ,  128
+sdim appP     ,  128
 sdim app_mes  ,   64 , 4
 sdim app_list , 1024
-appP = dirP+"\\App.ini"
+appP = dirP+"/App.ini"
 
 goto *EoF_App
 
@@ -36,15 +36,15 @@ return
 				if n >= 0000 & n <= 9999 {
 					getstr app_name , get_data , 14 , '\n'
 					noteget get_data , nl+1
-					getstr app_path , get_data , 14 , '\n'
-					app(n) = app_path
+					getstr appP , get_data , 14 , '\n'
+					app(n) = appP
 					if nx != nl+2 { ne = "\n" } else { ne = "" }
 					app_list += "["+strf("%04d",n)+"] "+app_name+ne
 					nl += 2
 				} else {
 					getstr app_name , get_data , 14 , '\n'
 					noteget get_data , nl+1
-					getstr app_path , get_data , 14 , '\n'
+					getstr appP , get_data , 14 , '\n'
 					if nx != nl+2 { ne = "\n" } else { ne = "" }
 					app_list += "[NULL] "+app_name+ne
 					nl += 2
@@ -72,8 +72,9 @@ return
 return
 ; アプリケーションを起動
 *runApp
-	n  = -1
-	ns = -1
+	n   = -1
+	ns  = -1
+	buf =  0
 	gosub *getTimeCode
 	switch stat
 		case 1 : ns = 0 : n = int(set_app_1) : swbreak
@@ -83,37 +84,64 @@ return
 		case 5 : ns = 1 : n = int(set_app_2) : swbreak
 		case 6 : ns = 2 : n = int(set_app_3) : swbreak
 	swend
-	if n >= 0000 & n <= 9999 {
-		if app(n) != "" {
-			ex = getpath(app(n),2) : ex = strmid(ex,0,4)
-			if ex = ".exe" { app_type = 0 } else { app_type = 1 }
-			if app_type =  0 {
-				exist getpath(app(n),1)+".exe"
-				if strsize != -1 {
-					exec app(n) , 0
-					app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] を起動しました"
-				} else {
-					exist dirP+getpath(app(n),1)+".exe"
-					if strsize != -1 {
-						exec dirP+app(n) , 0
-						app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] を起動しました"
-					} else {
-						dialog "["+strf("%04d",n)+"]\nファイルが存在しません！" , 1 , "起動エラー"
-						app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] の起動に失敗しました"
-					}
-				}
-			}
-			if app_type = 1 {
-				exec app(n) , 16
-				app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] を起動しました"
-			}
-		} else {
-			dialog "["+strf("%04d",n)+"]\nパスが空白です！" , 1 , "起動エラー"
-			app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] の起動に失敗しました"
-		}
-	} else {
+	; 検索
+	if n >= 0000 & n <= 9999 : buf +=   1
+	if app(n) != ""          : buf +=   2
+	ex = getpath(app(n),2)
+	ex = strmid(ex,0,4)
+	if ex != ".exe"          : buf +=   4
+	exist getpath(app(n),1)+".exe"
+	if strsize != -1         : buf +=   8
+	exist dirP+getpath(app(n),1)+".exe"
+	if strsize != -1         : buf +=  16
+	if rootA_app_dirP != "" {
+		exist rootA_app_dirP+getpath(app(n),1)+".exe"
+		if strsize != -1     : buf +=  32
+	}
+	if rootB_app_dirP != "" {
+		exist rootB_app_dirP+getpath(app(n),1)+".exe"
+		if strsize != -1     : buf +=  64
+	}
+	; 実行
+	if buf = 4+3 {
+		exec app(n) , 16
+		buf += 128
+	}
+	if buf = 8+3 | buf = 8+16+3 | buf = 8+32+3 | buf = 8+64+3 | buf = 8+16+32+3 | buf = 8+32+64+3 | buf = 8+64+16+3 | buf = 8+16+32+64+3 {
+		exec app(n) , 0
+		buf += 128
+	}
+	if buf = 16+3 | buf = 16+32+3 | buf = 16+64+3 | buf = 16+32+64+3 {
+		exec dirP+app(n) , 0
+		buf += 128
+	}
+	if buf = 32+3 | buf = 32+64+3 {
+		exec rootA_app_dirP+app(n) , 0
+		buf += 128
+	}
+	if buf = 64+3 {
+		exec rootB_app_dirP+app(n) , 0
+		buf += 128
+	}
+	; 結果
+	if buf  =   0 {
 		dialog "["+n+"]\nこの番号は存在しません！" , 1 , "起動エラー"
 		app_mes(ns) = ""+time+" [NULL] の起動に失敗しました"
+	}
+	if buf  =   1 {
+		dialog "["+strf("%04d",n)+"]\nパスが空白です！" , 1 , "起動エラー"
+		app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] の起動に失敗しました"
+	}
+	if buf  =   3 {
+		dialog "["+strf("%04d",n)+"]\nファイルが存在しません！" , 1 , "起動エラー"
+		app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] の起動に失敗しました"
+	}
+	if buf >=   8 & buf <= 127 {
+		dialog "["+strf("%04d",n)+"]\nファイルが重複しています！" , 1 , "警告"
+		app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] を起動しました"
+	}
+	if buf >= 128 {
+		app_mes(ns) = ""+time+" ["+strf("%04d",n)+"] を起動しました"
 	}
 goto *MainD
 ; カレントフォルダーを開く

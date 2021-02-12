@@ -134,9 +134,7 @@ return
 return
 *drawObjectD
 	clrobj
-	                   objmode 2 : font "‚l‚r ƒSƒVƒbƒN" , 12
 	ChipPos     10, 25           : mesbox app_list , 16*18,16*18 , 0 , 0
-	                   objmode 1 : font "‚l‚r ƒSƒVƒbƒN" , 15
 	ChipObject  35,230 ,  20,  0 : button "‹N“®" , *runApp
 	ChipObject  98,230 ,  20,  0 : button "‹N“®" , *runApp
 	ChipObject 160,230 ,  20,  0 : button "‹N“®" , *runApp

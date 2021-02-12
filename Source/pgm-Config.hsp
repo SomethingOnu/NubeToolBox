@@ -9,6 +9,8 @@ music_treble      =  0.00
 fps = 30
 window_active    = 0
 window_pos_style = 0
+rootA_app_dirP = ""
+rootB_app_dirP = ""
 configP = dirP + "/Config.ini"
 
 goto *EoF_Config
@@ -36,6 +38,9 @@ goto *EoF_Config
 		noteadd ""
 		noteadd "Pos X = 12"
 		noteadd "Pos Y = 12"
+		noteadd ""
+		noteadd "Root App Path A = "
+		noteadd "Root App Path B = "
 		notesave configP
 	}
 return
@@ -59,7 +64,12 @@ return
 	noteget get_data , nl : getstr window_pos_style  , get_data , 16+3 , '\n' : nl += 1 : window_pos_style  = int(window_pos_style)
 	nl += 1
 	noteget get_data , nl : getstr posX              , get_data ,  5+3 , '\n' : nl += 1 : posX              = int(posX)
-	noteget get_data , nl : getstr posY              , get_data ,  5+3 , '\n' :         : posY              = int(posY)
+	noteget get_data , nl : getstr posY              , get_data ,  5+3 , '\n' : nl += 1 : posY              = int(posY)
+	nl += 1
+	noteget get_data , nl : getstr rootA_app_dirP    , get_data , 15+3 , '\n' : nl += 1
+	if strmid(rootA_app_dirP,-1,1) != "/"                                               : rootA_app_dirP    = rootA_app_dirP+"/"
+	noteget get_data , nl : getstr rootB_app_dirP    , get_data , 15+3 , '\n'
+	if strmid(rootB_app_dirP,-1,1) != "/"                                               : rootB_app_dirP    = rootB_app_dirP+"/"
 return
 ; コンフィグファイルを保存
 *saveConfig
